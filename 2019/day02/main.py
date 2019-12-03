@@ -14,12 +14,9 @@ Once you're done processing an opcode, move to the next one by stepping forward 
 import argparse
 
 
-def part_one(file_input):
+def runner(program):
     """part_one
     """
-    program = [int(piece) for piece in file_input.strip().split(',')]
-    program[1] = 12
-    program[2] = 2
     position = 0
     while True:
         opcode = program[position]
@@ -34,8 +31,29 @@ def part_one(file_input):
         else:
             print("I am Broken...")
         position += 4
-
     return program[position]
+
+
+def part_one(file_input):
+    """part_one
+    """
+    program = [int(piece) for piece in file_input.strip().split(',')]
+    program[1] = 12
+    program[2] = 2
+    return runner(program)
+
+
+def part_two(file_input):
+    """part_two
+    """
+    program = [int(piece) for piece in file_input.strip().split(',')]
+    for noun in range(100):
+        for verb in range(100):
+            program_temp = program[:]
+            program_temp[1] = noun
+            program_temp[2] = verb
+            if runner(program=program_temp) == 19690720:
+                return 100 * noun + verb
 
 
 def main():
@@ -51,6 +69,9 @@ def main():
 
     with open(args.file) as file:
         print(f"Part 1: {part_one(file_input=file.read())}")
+
+    with open(args.file) as file:
+        print(f"Part 2: {part_two(file_input=file.read())}")
 
     return
 
